@@ -33,49 +33,75 @@ $(document).ready(function() {
           makeRow(searchValue);
         }
 
-        // clear any old content
+        $(".current-card").remove();
+
 
         var city = data.name;
         console.log(city);
+        var rightNow = moment().format('l');
+        var hereAndNow = city + ":  " + rightNow;
         console.log(data.main.temp);
         var tempF = ((data.main.temp-273.15) * (9/5) + 32).toFixed(0);
         console.log(tempF + "degrees")
         var windS = data.wind.speed;
         console.log(windS);
 
-        // merge and add to page
 
         var currentCard = $("<div>").attr("class", "card");
         $("#forecast").append(currentCard);
-        var currentCardBody = $("<div>").attr("class", "card");
+        var currentCardBody = $("<div>").attr("class", "card-body current-card");
         currentCard.append(currentCardBody)
-        currentCardBody.append(city);
+        currentCardBody.append(hereAndNow);
+
         currentCardBody.append(tempF);
         currentCardBody.append(windS); 
         
         // call follow-up api endpoints
         getForecast(searchValue);
         getUVIndex(data.coord.lat, data.coord.lon);
-      }
-    });
-  }
+      } 
+    })    
+  }; 
   
   function getForecast(searchValue) {
     $.ajax({
-      type: "",
-      url: "" + searchValue + "",
+      type: "GET",
+      url: "http://api.openweathermap.org/data/2.5/forecast?q=" + searchValue + "&appid=c6d5f05decfd9be073dd9d9ddc0bd4c5",
       dataType: "json",
       success: function(data) {
-        // overwrite any existing content with title and empty row
 
-        // loop over all forecasts (by 3-hour increments)
+        $(".forecast-card").remove();
+
+         // loop over all forecasts (by 3-hour increments)
         for (var i = 0; i < data.list.length; i++) {
           // only look at forecasts around 3:00pm
           if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
             // create html elements for a bootstrap card
             
+            var dt = new Date();
+            console.log(dt);
+            var dte = dt.getMonth() + " " + dt.getDate() + "th";
+            console.log(dte);
+
+            
+
+            var hiTemp = ((data.list[i].main.temp_max - 273.15) * (9/5) + 32).toFixed(0);
+            console.log("The high temperature for the above date is " + hiTemp);
+
+            var humidity = data.list[i].main.humidity;
+            console.log("The humidity for the above date is " + humidity + "%")
+            console.log("we are on index number " + [i]);
 
             // merge together and put on page
+
+            
+            var forecastCard = $("<div>").attr("class", "card forecast-card");
+            var forecastCardBody = $("<div>").attr("class", "card-body");
+            $(".five-day").append(forecastCard);
+            forecastCard.append(forecastCardBody);
+            forecastCardBody.append(hiTemp);
+            forecastCardBody.append(humidity);
+            
           }
         }
       }
@@ -84,16 +110,17 @@ $(document).ready(function() {
 
   function getUVIndex(lat, lon) {
     $.ajax({
-      type: "",
-      url: "" + lat + "&lon=" + lon,
+      type: "GET",
+      url: "http://api.openweathermap.org/data/2.5/uvi?appid=c6d5f05decfd9be073dd9d9ddc0bd4c5&lat=" + lat + "&lon=" + lon,
       dataType: "json",
       success: function(data) {
-        var uv = $("<p>").text("UV Index: ");
+        var uv = $("<p>").text("UV Index: " + data.value);
         var btn = $("<span>").addClass("btn btn-sm").text(data.value);
-        
+        console.log(uv.val());
         // change color depending on uv value
         
-        $("#today .card-body").append(uv.append(btn));
+        $(".current-card").append(uv.append(btn));
+        
       }
     });
   }
