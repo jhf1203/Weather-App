@@ -1,23 +1,21 @@
 $(document).ready(function() {
   $("#search-button").on("click", function() {
     var searchValue = $("#search-value").val();
-
-    // clear input box
-
-    // searchValue.text("");
-
     searchWeather(searchValue);
   });
 
+  // This function allows us to view the current conditions for any city in our local history.
   $(".history").on("click", "li", function() {
     searchWeather($(this).text());
   });
 
+  // This function ensures that saved search locations are populated under the search bar
   function makeRow(text) {
     var li = $("<li>").addClass("list-group-item list-group-item-action").text(text);
     $(".history").append(li);
   }
 
+  // Ajax call for current weather conditions
   function searchWeather(searchValue) {
     $.ajax({
       type: "GET",
@@ -25,56 +23,52 @@ $(document).ready(function() {
             searchValue + "&appid=c6d5f05decfd9be073dd9d9ddc0bd4c5",
       dataType: "json",
       success: function(data) {
-        // create history link for this search
+
+        // This adds the location to our history, provided it isn't already there.
         if (history.indexOf(searchValue) === -1) {
           history.push(searchValue);
           window.localStorage.setItem("history", JSON.stringify(history));
-    
           makeRow(searchValue);
         }
 
-
+        // Here is where we clear the content loaded from the previous search.
         $(".current-card-header").remove();
         $(".current-card-body").remove();
         $(".card").remove();
 
-
+        // Variables created from values pulled from the API
         var city = data.name;
-        // console.log(city);
         var rightNow = moment().format('dddd, MMMM Do');
-        // console.log(data.main.temp);
         var tempF = ((data.main.temp-273.15) * (9/5) + 32).toFixed(0);
-        // console.log(tempF + "degrees")
         var windS = data.wind.speed;
-        // console.log(windS);
         var humidCurrent = data.main.humidity;
-        var heatIndex = ((data.main.feels_like-273.15) * (9/5) + 32).toFixed(0)
-        
-
-        var currentCard = $("<div>").attr("class", "card");
-        $("#forecast").append(currentCard);
-
-        var currentCardHeader = $("<h2>").attr("class", "card-header current-card-header").html("Currently, in " + city + " | " + rightNow);
-
-        var currentCardBody = $("<div>").attr("class", "card-body current-card-body");
-
-
-        var humidityCurrent = $("<p>").attr("class", "current-p current-humidity").html("Humidity | " + humidCurrent + "%");
-
-        var windCurrent = $("<p>").attr("class", "current-p current-wind").html("Wind Speed | " + windS + "mph");
-
-        var feelsLike = $("<p>").attr("class", "current-p todays-high").html("Feels Like | " + heatIndex + "&deg");
-        var overviewCurrent = $("<p>").attr("class", "current-p current-overview");
-
+        var heatIndex = ((data.main.feels_like-273.15) * (9/5) + 32).toFixed(0);
         var historyCol = $(".col-lg-3");
-
         var conditionsId = data.weather[0].id;
-
-        console.log("Here is the conditionsid variable " + conditionsId);
-
-        // console.log("THIS IS HISTORYCOL " + historyCol);
         
-        console.log("This is the id for the current weather " + data.weather[0].id);
+        // Creating elements reflective of current weather data.
+        var currentCard = $("<div>")
+          .attr("class", "card");
+        $("#forecast").append(currentCard);
+        var currentCardHeader = $("<h2>")
+          .attr("class", "card-header current-card-header")
+          .html("Currently, in " + city + " | " + rightNow);
+        var currentCardBody = $("<div>")
+          .attr("class", "card-body current-card-body");
+        var humidityCurrent = $("<p>")
+          .attr("class", "current-p current-humidity")
+          .html("Humidity | " + humidCurrent + "%");
+        var windCurrent = $("<p>")
+          .attr("class", "current-p current-wind")
+          .html("Wind Speed | " + windS + "mph");
+        var feelsLike = $("<p>")
+          .attr("class", "current-p todays-high")
+          .html("Feels Like | " + heatIndex + "&deg");
+        var overviewCurrent = $("<p>")
+          .attr("class", "current-p current-overview");
+        
+        // This conditional attaches the correct icon/color palette to the page based off of current conditions: https://openweathermap.org/weather-conditions
+
         if (conditionsId === 800) {
 
           currentCardBody.addClass("clear-now");
@@ -161,24 +155,25 @@ $(document).ready(function() {
 
         }
 
+        // Here we add the content to our card containing our current weather conditions.
+
         currentCard.append(currentCardHeader);
         currentCard.append(currentCardBody);
         $(".current-card-body").append(overviewCurrent);
-        // $(".current-card-body").append(conditionsCurrent);
         $(".current-card-body").append(feelsLike);
         $(".current-card-body").append(humidityCurrent);
         $(".current-card-body").append(windCurrent);
 
-
-        
-        
-        // call follow-up api endpoints
+        // Call function to obtain the 5-day forecast for the same city searched
         getForecast(searchValue);
+
+        // Call function to obtain the UVI of the city searched.
         getUVIndex(data.coord.lat, data.coord.lon);
       } 
     })    
   }; 
   
+  // ajax call for the forecast API
   function getForecast(searchValue) {
     $.ajax({
       type: "GET",
@@ -186,56 +181,41 @@ $(document).ready(function() {
       dataType: "json",
       success: function(data) {
 
+        // Clears the forecast for the previous location queried
         $(".forecast-card").remove();
 
-         // loop over all forecasts (by 3-hour increments)
+        // Runs through each 3-hour increment (Usually indexes 0-39), displaying conditions forecast for 3pm on a given day, resulting in five forecasts found.
         for (var i = 0; i < data.list.length; i++) {
-          // only look at forecasts around 3:00pm
           if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
-            // create html elements for a bootstrap card
-            // console.log("we are on index " + i);
+           
+            // This pulls the max temp forecasted at 3pm daily.
             var temp1 = ((data.list[i].main.temp_max - 273.15) * (9/5) + 32).toFixed(0);
             
+            // Conditional to pull the minimum temperature value for 3am (usually will be the forecast low for the day)
             if (i > 5) {
-
               var temp2 = ((data.list[i-4].main.temp_min -273.5) * (9/5) + 32).toFixed(0);
-
-            } else {
-              
+            } else {             
               var temp2 = ((data.list[i+4].main.temp_min -273.5) * (9/5) + 32).toFixed(0)
             }
 
+            // Conditional to ensure that the lowest temperatur evalue between 3am and 3pm is the recorded low for the day, and vice versa, and sets them as our daily high temperature and daily low temperature.
             if (temp1 < temp2) {
-
               var hiTemp = temp2;
               var loTemp = temp1;
-
             } else {
-
               var hiTemp = temp1;
               var loTemp = temp2;
-
             }
 
+            // More variables from the forecast API values 
             var forecastHumidity = data.list[i].main.humidity;
-
-            // var upcomingConditions = data.list[i].weather[0].description;
-            // console.log(forecastConditions);
-            console.log("we are on index number " + [i]);
-            console.log("And this is the max " + hiTemp);
-            console.log("And this is the min " + loTemp);
-            console.log("And this is the descriptor " + data.list[i].weather[0].id);
-
             var forecastId = data.list[i].weather[0].id;
-
-            // merge together and put on page
-
             
+            // Elements to be created for each five-day forecast card
             var forecastCard = $("<div>")
                               .attr("class", "card forecast-card");
             var forecastCardBody = $("<div>")
                               .attr("class", "card-body forecast-card-body");
-            $(".five-day").append(forecastCard);
             var forecastCardHeader = $("<h4>")
                               .attr("class", "card-header forecast-card-header");
             var forecastCardHi = $("<p>")
@@ -250,71 +230,48 @@ $(document).ready(function() {
             var forecastCardConditions = $("<p>")
                               .attr("class", "forecast-card-p")
                               
-
+            // This conditional attaches the correct icon/color palette to the page based off of future 3pm conditions: https://openweathermap.org/weather-conditions
             if (forecastId === 800) {
-
                 forecastCardBody.addClass("clear-now");
                 forecastCardConditions.html("Clear");
-
             } else if (forecastId > 800 && forecastId < 803) {
-
                 forecastCardBody.addClass("partly-cloudy-now");
                 forecastCardConditions.html("Partly Cloudy");
-
             } else if (forecastId === 803) {
-
               forecastCardBody.addClass("mostly-cloudy-now");
               forecastCardConditions.html("Mostly Cloudy");
-
             } else if (forecastId === 804) {
-
               forecastCardBody.addClass("cloudy-now");
               forecastCardConditions.html("Cloudy");
-
             } else if (forecastId > 299 && forecastId < 399) {
-
               forecastCardBody.addClass("showers-now");
               forecastCardConditions.html("Showers");
-
             } else if (199 < forecastId && forecastId < 299) {
-
               forecastCardBody.addClass("thunderstorm-now");
               forecastCardConditions.html("Thunderstorm");
-
             } else if (499 < forecastId && forecastId < 599 && forecastId != 511) {
-
               forecastCardBody.addClass("rain-now");
               forecastCardConditions.html("Rain");
-
             } else if ((599 < forecastId && forecastId < 603) || (619 < forecastId && forecastId < 623)) {
-
               forecastCardBody.addClass("snow-now");
               forecastCardConditions.html("Snow");
-
             } else if ((614 < forecastId && forecastId < 617) || forecastId === 511) {
-
               forecastCardBody.addClass("wintry-mix-now");
               forecastCardConditions.html("Wintry Mix");
-
             } else if (610 < forecastId && forecastId < 614) {
-
               forecastCardBody.addClass("sleet-now");
               forecastCardConditions.html("Sleet");
-
             } else if (770 < forecastId && forecastId < 790) {
-
               forecastCardBody.addClass("windy-now");
               forecastCardConditions.html("Windy");
-
             } else {
-
               forecastCardBody.addClass("foggy-now");
               forecastCardConditions.html("Foggy");
 
             }
 
-
-
+            // Adding the created elements to the five-day forecast:  Five cards in total
+            $(".five-day").append(forecastCard);
             forecastCard.append(forecastCardHeader)
             forecastCard.append(forecastCardBody);
             forecastCardBody.append(forecastCardHi);
@@ -322,6 +279,7 @@ $(document).ready(function() {
             forecastCardBody.append(forecastCardHumidity);
             forecastCardBody.append(forecastCardConditions);
 
+            // Attaching the correct future-date to each forecast card
             setDate();
             
           }
@@ -330,52 +288,42 @@ $(document).ready(function() {
     });
   }
 
+  // Function to add the correct dates to each card of the forecast.
   function setDate () {
 
     var daysOut = 1;
-
     $(".forecast-card-header").each(function() {
-      // console.log("this is daysout right now" + daysOut);
     $(this).text(moment().add(daysOut, 'days').format("ddd, MMM Do"));
-
     daysOut++
-      // console.log("This is after we added a day to daysout" + daysOut);
     });
   }
 
+  // Ajax call to retrieve UV index
   function getUVIndex(lat, lon) {
     $.ajax({
       type: "GET",
       url: "http://api.openweathermap.org/data/2.5/uvi?appid=c6d5f05decfd9be073dd9d9ddc0bd4c5&lat=" + lat + "&lon=" + lon,
       dataType: "json",
       success: function(data) {
+
+        // Creating the two elements displaying the UV Index
         var uv = $("<p>").addClass("current-p").html("UV Index | ");
         var btn = $("<span>").addClass("btn btn-sm current-p");
 
-        // console.log("Here is our button" + data.value);
+        // conditional to color-code the button that indicates the UV Index Value
         if (data.value < 2.5) {
-
           btn.addClass("uv-low").html(data.value);
-
         } else if ( 2.4 < data.value && data.value < 5.5) {
-
           btn.addClass("uv-mod").html(data.value);
-
         } else if ( 5.4 < data.value && data.value < 7.5) {
-
-          
           btn.addClass("uv-high").html(data.value);
-
         } else if (7.4 < data.value && data.value < 10.5) {
-
           btn.addClass("uv-very-high").html(data.value);
-
         } else {
-
           btn.addClass("uv-extreme").html(data.value);
-
         };
 
+        // Adding the UV Index information to the current forecast
         $(".current-card-body").append(uv.append(btn));
         
       }
