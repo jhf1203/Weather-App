@@ -33,8 +33,10 @@ $(document).ready(function() {
           makeRow(searchValue);
         }
 
+
         $(".current-card-header").remove();
         $(".current-card-body").remove();
+        $(".card").remove();
 
 
         var city = data.name;
@@ -47,8 +49,7 @@ $(document).ready(function() {
         // console.log(windS);
         var humidCurrent = data.main.humidity;
         var heatIndex = ((data.main.feels_like-273.15) * (9/5) + 32).toFixed(0)
-        var currentConditions = data.weather[0].description;
-        // console.log(currentConditions);
+        
 
         var currentCard = $("<div>").attr("class", "card");
         $("#forecast").append(currentCard);
@@ -67,79 +68,94 @@ $(document).ready(function() {
 
         var historyCol = $(".col-lg-3");
 
-        console.log("THIS IS HISTORYCOL " + historyCol);
-        // console.log("This is the conditionscurrent variable: " + conditionsCurrent);
-        
+        var conditionsId = data.weather[0].id;
 
-        if (data.weather[0].id == 800) {
+        console.log("Here is the conditionsid variable " + conditionsId);
+
+        // console.log("THIS IS HISTORYCOL " + historyCol);
+        
+        console.log("This is the id for the current weather " + data.weather[0].id);
+        if (conditionsId === 800) {
 
           currentCardBody.addClass("clear-now");
+          historyCol.removeClass("partly-cloudy-now mostly-cloudy-now cloudy-now showers-now thunderstorm-now rain-now snow-now wintry-mix-now sleet-now windy-now foggy-now")
           historyCol.addClass("clear-now");
           overviewCurrent.html(tempF + "&deg F | Clear");
 
-        } else if (data.weather[0].id == 801, 802) {
+        } else if ( 800 < conditionsId && conditionsId < 803) {
 
           currentCardBody.addClass("partly-cloudy-now");
+          historyCol.removeClass("clear-now mostly-cloudy-now cloudy-now showers-now thunderstorm-now rain-now snow-now wintry-mix-now sleet-now windy-now foggy-now")
           historyCol.addClass("partly-cloudy-now");
           overviewCurrent.html(tempF + "&deg F | Partly Cloudy");
 
-        } else if (data.weather[0].id == 803) {
+        } else if (conditionsId === 803) {
 
           currentCardBody.addClass("mostly-cloudy-now");
+          historyCol.removeClass("clear-now partly-cloudy-now cloudy-now showers-now thunderstorm-now rain-now snow-now wintry-mix-now sleet-now windy-now foggy-now")
           historyCol.addClass("mostly-cloudy-now");
           overviewCurrent.html(tempF + "&deg F | Mostly Cloudy");
 
-        } else if (data.weather[0].id == 804) {
+        } else if (conditionsId === 804) {
 
           currentCardBody.addClass("cloudy-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now showers-now thunderstorm-now rain-now snow-now wintry-mix-now sleet-now windy-now foggy-now")
           historyCol.addClass("cloudy-now");
           overviewCurrent.html(tempF + "&deg F | Cloudy");
 
-        } else if (data.weather[0].id == 300, 301, 310, 311, 313, 321, 500, 501, 520, 521, 531) {
+        } else if (299 < conditionsId && conditionsId < 399) {
 
           currentCardBody.addClass("showers-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now cloudy-now thunderstorm-now rain-now snow-now wintry-mix-now sleet-now windy-now foggy-now")
           historyCol.addClass("showers-now");
           overviewCurrent.html(tempF + "&deg F | Showers");
 
-        } else if (data.weather[0].id == 200, 201, 202, 210, 211, 212, 221, 230, 231, 232) {
+        } else if ( 199 < conditionsId && conditionsId < 299) {
 
           currentCardBody.addClass("thunderstorm-now");
-          historyCol.addClass("clear-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now cloudy-now showers-now rain-now snow-now wintry-mix-now sleet-now windy-now foggy-now")
+          historyCol.addClass("thunderstorm-now");
           overviewCurrent.html(tempF + "&deg F | Thunderstorm");
 
-        } else if (data.weather[0].id == 502, 503, 504, 522, 302, 312, 314) {
+        } else if (499 < conditionsId && conditionsId < 599 && conditionsId != 511) {
 
           currentCardBody.addClass("rain-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now cloudy-now showers-now thunderstorm-now  snow-now wintry-mix-now sleet-now windy-now foggy-now");
           historyCol.addClass("rain-now");
           overviewCurrent.html(tempF + "&deg F | Rain");
 
-        } else if (data.weather[0].id == 600, 601, 602, 620, 621, 622) {
+        } else if ((599 < conditionsId && conditionsId < 603) || (619 < conditionsId && conditionsId < 623)) {
 
           currentCardBody.addClass("snow-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now cloudy-now showers-now rain-now thunderstorm-now wintry-mix-now sleet-now windy-now foggy-now");
           historyCol.addClass("snow-now");
           overviewCurrent.html(tempF + "&deg F | Snow");
 
-        } else if (data.weather[0].id == 511, 615, 616) {
+        } else if ( 614 < conditionsId && conditionsId < 617 || conditionsId === 511) {
 
           currentCardBody.addClass("wintry-mix-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now cloudy-now showers-now thunderstorm-now rain-now snow-now sleet-now windy-now foggy-now");
           historyCol.addClass("wintry-mix-now");
           overviewCurrent.html(tempF + "&deg F | Wintry Mix");
 
-        } else if (data.weather[0].id == 611, 612, 613) {
+        } else if (610 < conditionsId && conditionsId < 614) {
 
           currentCardBody.addClass("sleet-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now cloudy-now showers-now rain-now thunderstorm-now snow-now wintry-mix-now windy-now foggy-now");
           historyCol.addClass("sleet-now")
           overviewCurrent.html(tempF + "&deg F | Sleet");
 
-        } else if (data.weather[0].id == 771, 781) {
+        } else if (770 < conditionsId && conditionsId < 782) {
 
           currentCardBody.addClass("windy-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now cloudy-now showers-now rain-now thunderstorm-now  snow-now wintry-mix-now sleet-now foggy-now");
           historyCol.addClass("windy-now");
           overviewCurrent.html(tempF + "&deg F | Windy");
 
         } else {
 
           currentCardBody.addClass("foggy-now");
+          historyCol.removeClass("clear-now partly-cloudy-now mostly-cloudy-now cloudy-now showers-now rain-now thunderstorm-now  snow-now wintry-mix-now sleet-now windy-now");
           historyCol.addClass("foggy-now")
           overviewCurrent.html(tempF + "&deg F | Foggy");
 
@@ -178,22 +194,39 @@ $(document).ready(function() {
           if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
             // create html elements for a bootstrap card
             // console.log("we are on index " + i);
-            var hiTemp = ((data.list[i].main.temp_max - 273.15) * (9/5) + 32).toFixed(0);
+            var temp1 = ((data.list[i].main.temp_max - 273.15) * (9/5) + 32).toFixed(0);
             
             if (i > 5) {
 
-              var loTemp = ((data.list[i-4].main.temp_min -273.5) * (9/5) + 32).toFixed(0);
+              var temp2 = ((data.list[i-4].main.temp_min -273.5) * (9/5) + 32).toFixed(0);
 
             } else {
               
-              var loTemp = ((data.list[i+4].main.temp_min -273.5) * (9/5) + 32).toFixed(0)
+              var temp2 = ((data.list[i+4].main.temp_min -273.5) * (9/5) + 32).toFixed(0)
+            }
+
+            if (temp1 < temp2) {
+
+              var hiTemp = temp2;
+              var loTemp = temp1;
+
+            } else {
+
+              var hiTemp = temp1;
+              var loTemp = temp2;
+
             }
 
             var forecastHumidity = data.list[i].main.humidity;
 
-            var forecastConditions = data.list[i].weather[0].description;
+            // var upcomingConditions = data.list[i].weather[0].description;
             // console.log(forecastConditions);
             console.log("we are on index number " + [i]);
+            console.log("And this is the max " + hiTemp);
+            console.log("And this is the min " + loTemp);
+            console.log("And this is the descriptor " + data.list[i].weather[0].id);
+
+            var forecastId = data.list[i].weather[0].id;
 
             // merge together and put on page
 
@@ -218,57 +251,57 @@ $(document).ready(function() {
                               .attr("class", "forecast-card-p")
                               
 
-            if (data.list[i].weather[0].id == 800) {
+            if (forecastId === 800) {
 
                 forecastCardBody.addClass("clear-now");
                 forecastCardConditions.html("Clear");
 
-            } else if (data.list[i].weather[0].id == 801, 802) {
+            } else if (forecastId > 800 && forecastId < 803) {
 
                 forecastCardBody.addClass("partly-cloudy-now");
                 forecastCardConditions.html("Partly Cloudy");
 
-            } else if (data.list[i].weather[0].id == 803) {
+            } else if (forecastId === 803) {
 
               forecastCardBody.addClass("mostly-cloudy-now");
               forecastCardConditions.html("Mostly Cloudy");
 
-            } else if (data.list[i].weather[0].id == 804) {
+            } else if (forecastId === 804) {
 
               forecastCardBody.addClass("cloudy-now");
               forecastCardConditions.html("Cloudy");
 
-            } else if (data.list[i].weather[0].id == 300, 301, 310, 311, 313, 321, 500, 501, 520, 521, 531) {
+            } else if (forecastId > 299 && forecastId < 399) {
 
               forecastCardBody.addClass("showers-now");
               forecastCardConditions.html("Showers");
 
-            } else if (data.list[i].weather[0].id == 200, 201, 202, 210, 211, 212, 221, 230, 231, 232) {
+            } else if (199 < forecastId && forecastId < 299) {
 
               forecastCardBody.addClass("thunderstorm-now");
               forecastCardConditions.html("Thunderstorm");
 
-            } else if (data.list[i].weather[0].id == 502, 503, 504, 522, 302, 312, 314) {
+            } else if (499 < forecastId && forecastId < 599 && forecastId != 511) {
 
               forecastCardBody.addClass("rain-now");
               forecastCardConditions.html("Rain");
 
-            } else if (data.list[i].weather[0].id == 600, 601, 602, 620, 621, 622) {
+            } else if ((599 < forecastId && forecastId < 603) || (619 < forecastId && forecastId < 623)) {
 
               forecastCardBody.addClass("snow-now");
               forecastCardConditions.html("Snow");
 
-            } else if (data.list[i].weather[0].id == 511, 615, 616) {
+            } else if ((614 < forecastId && forecastId < 617) || forecastId === 511) {
 
               forecastCardBody.addClass("wintry-mix-now");
               forecastCardConditions.html("Wintry Mix");
 
-            } else if (data.list[i].weather[0].id == 611, 612, 613) {
+            } else if (610 < forecastId && forecastId < 614) {
 
               forecastCardBody.addClass("sleet-now");
               forecastCardConditions.html("Sleet");
 
-            } else if (data.list[i].weather[0].id == 771, 781) {
+            } else if (770 < forecastId && forecastId < 790) {
 
               forecastCardBody.addClass("windy-now");
               forecastCardConditions.html("Windy");
@@ -302,11 +335,11 @@ $(document).ready(function() {
     var daysOut = 1;
 
     $(".forecast-card-header").each(function() {
-      console.log("this is daysout right now" + daysOut);
+      // console.log("this is daysout right now" + daysOut);
     $(this).text(moment().add(daysOut, 'days').format("ddd, MMM Do"));
 
     daysOut++
-      console.log("This is after we added a day to daysout" + daysOut);
+      // console.log("This is after we added a day to daysout" + daysOut);
     });
   }
 
@@ -319,7 +352,7 @@ $(document).ready(function() {
         var uv = $("<p>").addClass("current-p").html("UV Index | ");
         var btn = $("<span>").addClass("btn btn-sm current-p");
 
-        console.log("Here is our button" + data.value);
+        // console.log("Here is our button" + data.value);
         if (data.value < 2.5) {
 
           btn.addClass("uv-low").html(data.value);

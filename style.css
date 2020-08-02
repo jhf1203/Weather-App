@@ -10,22 +10,35 @@ body {
     text-transform:capitalize;
 }
 
+h1 { 
+
+    /* Box-Model */
+    margin-left:15px;
+    padding-top:6px;
+
+    /* Typography */
+    font-size:33px;
+}
+
 h2 {
 
     /* Typography */
     font-weight:600;
+    opacity:0.7;
 }
 
 h4 {
 
     font-size:18px;
     font-weight:600;
+    opacity:0.7;
 }
 
 h5 {
 
     /* Typography */
-    font-size:14px;
+    font-size:16px;
+    font-weight:600;
 }
 
 
@@ -39,6 +52,27 @@ h5 {
     border:1px solid black;
 
 }
+
+.mt-1 {
+
+    color:white;
+    opacity:0.8;
+
+}
+
+.form-control {
+
+    /* Box-Model */
+    border:none;
+    border-bottom: 3px solid white;
+
+    /* Positioning */
+    width:95%;
+
+    /* Aesthetic */
+    background-color:transparent;
+}
+
 .list-group-item {
 
     /* Box-Model */
@@ -74,6 +108,12 @@ h5 {
 
 }
 
+.current-card-body {
+
+    /* Aesthetic */
+    background-color:rgb(214, 214, 214)
+}
+
 
 .current-p {
 
@@ -101,6 +141,8 @@ h5 {
 
     /* Aesthetic */
     background-image: url("./assets/partly-cloudy.png");
+    background-size:100%;
+    z-index:2;
 }
 
 
@@ -211,9 +253,20 @@ h5 {
     border: 1px solid white;
 }
 
+.btn-sm {
+
+    /* Typography */
+    color:white;
+
+}
+
 .col-lg-3 {
 
+    /* Box-Model */
+    margin-top:16px;
+    border-radius:5px;
     padding-bottom:12px;
+
 }
 
 
@@ -269,6 +322,12 @@ h5 {
 
     /* Typography */
     color:black;
+}
+
+#search-button {
+
+    border:none;
+
 }
 
 
