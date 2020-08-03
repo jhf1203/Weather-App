@@ -12,7 +12,8 @@ GIVEN a weather dashboard with form inputs:
 __________________________________________________
 
 Functioning site at https://jhf1203.github.io/Weather-App/
-Demo GIF at "./assets/weather-app-demo.gif"
+
+![Demo GIF](./assets/weather-app-demo.gif)
 
 Starter code for this project was provided, and the functions contained within are really only driven by two different events, either the page itself loading/refreshing or the search button being clicked.  The same functions that retrieve current and upcoming weather conditions are set to run as an item from our history area is clicked as well.  
 
