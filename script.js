@@ -19,7 +19,7 @@ $(document).ready(function() {
   function searchWeather(searchValue) {
     $.ajax({
       type: "GET",
-      url: "http://api.openweathermap.org/data/2.5/weather?q=" + 
+      url: "https://api.openweathermap.org/data/2.5/weather?q=" + 
             searchValue + "&appid=c6d5f05decfd9be073dd9d9ddc0bd4c5",
       dataType: "json",
       success: function(data) {
@@ -40,11 +40,32 @@ $(document).ready(function() {
         var city = data.name;
         var rightNow = moment().format('dddd, MMMM Do');
         var tempF = ((data.main.temp-273.15) * (9/5) + 32).toFixed(0);
-        var windS = data.wind.speed;
+        var windS = data.wind.speed.toFixed(0);
+        var windD = data.wind.deg;
         var humidCurrent = data.main.humidity;
         var heatIndex = ((data.main.feels_like-273.15) * (9/5) + 32).toFixed(0);
         var historyCol = $(".col-lg-3");
         var conditionsId = data.weather[0].id;
+
+        if (22.5 < windD && windD < 67.5) {
+          windDir = "NE"
+        } else if (67.5 < windD && windD < 112.5) {
+          windDir = "E"
+        } else if (112.5 < windD && windD < 157.5) {
+          windDir = "SE"
+        } else if (157.5 < windD && windD < 202.5) {
+          windDir = "S"
+        } else if (202.5 < windD && windD < 247.5) {
+          windDir = "SW"
+        } else if (247.5 < windD && windD < 292.5) {
+          windDir = "W"
+        } else if (292.5 < windD && windD < 337.5) {
+          windDir = "NW"
+        } else {
+          windDir = "N"
+        }
+
+
         
         // Creating elements reflective of current weather data.
         var currentCard = $("<div>")
@@ -59,7 +80,7 @@ $(document).ready(function() {
           .html("Humidity | " + humidCurrent + "%");
         var windCurrent = $("<p>")
           .attr("class", "current-p current-wind")
-          .html("Wind Speed | " + windS + "mph");
+          .html("Wind Speed | " + windS + "mph " + windDir);
         var feelsLike = $("<p>")
           .attr("class", "current-p todays-high")
           .html("Feels Like | " + heatIndex + "&deg");
@@ -177,7 +198,7 @@ $(document).ready(function() {
   function getForecast(searchValue) {
     $.ajax({
       type: "GET",
-      url: "http://api.openweathermap.org/data/2.5/forecast?q=" + searchValue + "&appid=c6d5f05decfd9be073dd9d9ddc0bd4c5",
+      url: "https://api.openweathermap.org/data/2.5/forecast?q=" + searchValue + "&appid=c6d5f05decfd9be073dd9d9ddc0bd4c5",
       dataType: "json",
       success: function(data) {
 
@@ -302,7 +323,7 @@ $(document).ready(function() {
   function getUVIndex(lat, lon) {
     $.ajax({
       type: "GET",
-      url: "http://api.openweathermap.org/data/2.5/uvi?appid=c6d5f05decfd9be073dd9d9ddc0bd4c5&lat=" + lat + "&lon=" + lon,
+      url: "https://api.openweathermap.org/data/2.5/uvi?appid=c6d5f05decfd9be073dd9d9ddc0bd4c5&lat=" + lat + "&lon=" + lon,
       dataType: "json",
       success: function(data) {
 
