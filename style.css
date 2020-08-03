@@ -71,7 +71,7 @@ h5 {
     /* Typography */
     font-size:20px;
     font-weight:600;
-    color:white;
+    color:white!important;
 
     /* Aesthetic */
     background-color:transparent;
@@ -83,7 +83,14 @@ h5 {
     background-color: transparent;
     box-shadow:none;
     border-bottom:3px solid white;
-    color:white;
+    color:white!important;
+}
+
+.form-control::placeholder {
+
+    color:white!important;
+    opacity:0.7;
+
 }
 
 .list-group-item {

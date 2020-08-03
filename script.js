@@ -2,11 +2,14 @@ $(document).ready(function() {
   $("#search-button").on("click", function() {
     var searchValue = $("#search-value").val();
     searchWeather(searchValue);
+    $("#search-value").val("");
+    $("#search-value").attr("placeholder", "Search For a City");
   });
 
   // This function allows us to view the current conditions for any city in our local history.
   $(".history").on("click", "li", function() {
     searchWeather($(this).text());
+
   });
 
   // This function ensures that saved search locations are populated under the search bar
@@ -35,6 +38,7 @@ $(document).ready(function() {
         $(".current-card-header").remove();
         $(".current-card-body").remove();
         $(".card").remove();
+        
 
         // Variables created from values pulled from the API
         var city = data.name;
