@@ -1,11 +1,12 @@
 header {
 
+    /* Positioning */
     height:0px;
-
 }
 
 body {
 
+    /* Typography */
     font-family: 'Questrial', sans-serif;
     text-transform:capitalize;
 }
@@ -29,6 +30,7 @@ h2 {
 
 h4 {
 
+    /* Typography */
     font-size:18px;
     font-weight:600;
     opacity:0.7;
@@ -41,23 +43,20 @@ h5 {
     font-weight:600;
 }
 
-
 .container-fluid {
 
     margin-top:40px;
-
 }
+
 .card {
 
     border:1px solid black;
-
 }
 
 .mt-1 {
 
     color:white;
     opacity:0.8;
-
 }
 
 .form-control {
@@ -67,10 +66,24 @@ h5 {
     border-bottom: 3px solid white;
 
     /* Positioning */
-    width:95%;
+    width:90%;
+
+    /* Typography */
+    font-size:25px;
+    font-weight:600;
+    color:white;
 
     /* Aesthetic */
     background-color:transparent;
+}
+
+.form-control:focus {
+
+    /* Aesthetic */
+    background-color: transparent;
+    box-shadow:none;
+    border-bottom:3px solid white;
+    color:white;
 }
 
 .list-group-item {
@@ -80,12 +93,10 @@ h5 {
 
     /* Aesthetic */
     opacity:0.8;
-
 }
 
 .bkgd {
-
-    
+  
     /* Positioning */
     background-size:80%;
     background-repeat: repeat;
@@ -99,13 +110,11 @@ h5 {
     opacity:0.4;
 }
 
-
 .current-card {
 
     /* Positioning */
     min-height:320px;
     max-height:320px;
-
 }
 
 .current-card-body {
@@ -113,7 +122,6 @@ h5 {
     /* Aesthetic */
     background-color:rgb(214, 214, 214)
 }
-
 
 .current-p {
 
@@ -142,122 +150,111 @@ h5 {
     /* Aesthetic */
     background-image: url("./assets/partly-cloudy.png");
     background-size:100%;
-    z-index:2;
 }
-
-
 
 .mostly-cloudy-now {
 
     /* Aesthetic */
     background-image: url("./assets/mostly-cloudy.png");
-
 }
 
 .cloudy-now {
 
     /* Aesthetic */
     background-image: url("./assets/cloudy.png");
-
 }
 
 .showers-now {
 
     /* Aesthetic */
     background-image: url("./assets/showers.png");
-
 }
 
 .rain-now {
 
     /* Aesthetic */
     background-image: url("./assets/rain.png");
-
 }
 
 .thunderstorm-now {
 
     /* Aesthetic */
     background-image: url("./assets/thunderstorm.png");
-
 }
 
 .snow-now {
 
     /* Aesthetic */
     background-image: url("./assets/snow.png");
-
 }
 
 .wintry-mix-now {
 
     /* Aesthetic */
     background-image: url("./assets/wintry-mix.png");
-
 }
 
 .sleet-now {
 
     /* Aesthetic */
     background-image: url("./assets/Sleet.png");
-
 }
 
 .windy-now {
 
     /* Aesthetic */
     background-image: url("./assets/windy.png");
-
 }
 
 .foggy-now {
 
     /* Aesthetic */
     background-image: url("./assets/Foggy.png");
-
 }
 
 .uv-low {
 
+    /* Aesthetic */
     background-color: rgb(13, 102, 13);
-
 }
 
 .uv-mod {
 
+    /* Aesthetic */
     background-color: rgb(175, 175, 4);
-
 }
 
 .uv-high {
 
+    /* Aesthetic */
     background-color: rgb(202, 136, 14);
-
 }
 
 .uv-very-high {
 
+    /* Aesthetic */
     background-color:rgb(136, 5, 5);
-
 }
 
 .uv-extreme {
 
+    /* Aesthetic */
     background-color:rgb(180, 95, 109)
-
 }
 
 .btn {
 
-    color:white;
+    /* Box-Model */
     border: 1px solid white;
+
+    /* Typography */
+    color:white;
 }
 
 .btn-sm {
 
     /* Typography */
     color:white;
-
 }
 
 .col-lg-3 {
@@ -312,7 +309,6 @@ h5 {
 
     /* Box-Model */
     border:1px solid black;
-
 }
 
 .btn-sm {
@@ -326,9 +322,23 @@ h5 {
 
 #search-button {
 
+    /* Box-Model */
     border:none;
+}
 
+@media only screen and (max-width:768px) {
+
+h4 {
+
+    /* Typography */
+    font-size:16px;
+}
+
+.forecast-card {
+
+    /* Positioning */
+    width: 45%;
 }
 
 
-
+}

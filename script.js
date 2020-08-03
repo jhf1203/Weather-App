@@ -49,7 +49,6 @@ $(document).ready(function() {
         // Creating elements reflective of current weather data.
         var currentCard = $("<div>")
           .attr("class", "card");
-        $("#forecast").append(currentCard);
         var currentCardHeader = $("<h2>")
           .attr("class", "card-header current-card-header")
           .html("Currently, in " + city + " | " + rightNow);
@@ -157,6 +156,7 @@ $(document).ready(function() {
 
         // Here we add the content to our card containing our current weather conditions.
 
+        $("#forecast").append(currentCard);
         currentCard.append(currentCardHeader);
         currentCard.append(currentCardBody);
         $(".current-card-body").append(overviewCurrent);
