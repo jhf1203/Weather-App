@@ -309,6 +309,9 @@ h5 {
 
     /* Box-Model */
     border:1px solid black;
+
+    /* Aesthetic */
+    background-color:grey;
 }
 
 .btn-sm {
