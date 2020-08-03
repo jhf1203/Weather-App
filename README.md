@@ -11,6 +11,9 @@ GIVEN a weather dashboard with form inputs:
 
 __________________________________________________
 
+Functioning site at https://jhf1203.github.io/Weather-App/
+Demo GIF at "./assets/weather-app-demo.gif"
+
 Starter code for this project was provided, and the functions contained within are really only driven by two different events, either the page itself loading/refreshing or the search button being clicked.  The same functions that retrieve current and upcoming weather conditions are set to run as an item from our history area is clicked as well.  
 
 Quite a bit goes into obtaining our current conditions by city once the ajax call is made with the city name.  The conditional on line 28 tests whether or not the city was already in our local history (if it was it wouldn't have an index of -1) and if it isn't creates a new row in our history for easy access in the future to that city.  
