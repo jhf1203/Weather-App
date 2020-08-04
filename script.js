@@ -51,6 +51,7 @@ $(document).ready(function() {
         var historyCol = $(".col-lg-3");
         var conditionsId = data.weather[0].id;
 
+        // Conditional to display the correct wind direction
         if (22.5 < windD && windD < 67.5) {
           windDir = "NE"
         } else if (67.5 < windD && windD < 112.5) {
@@ -68,8 +69,6 @@ $(document).ready(function() {
         } else {
           windDir = "N"
         }
-
-
         
         // Creating elements reflective of current weather data.
         var currentCard = $("<div>")
@@ -180,7 +179,6 @@ $(document).ready(function() {
         }
 
         // Here we add the content to our card containing our current weather conditions.
-
         $("#forecast").append(currentCard);
         currentCard.append(currentCardHeader);
         currentCard.append(currentCardBody);
@@ -223,7 +221,7 @@ $(document).ready(function() {
               var temp2 = ((data.list[i+4].main.temp_min -273.5) * (9/5) + 32).toFixed(0)
             }
 
-            // Conditional to ensure that the lowest temperatur evalue between 3am and 3pm is the recorded low for the day, and vice versa, and sets them as our daily high temperature and daily low temperature.
+            // Conditional to ensure that the lowest temperature value between 3am and 3pm is the recorded low for the day, and vice versa, and sets them as our daily high temperature and daily low temperature.
             if (temp1 < temp2) {
               var hiTemp = temp2;
               var loTemp = temp1;
